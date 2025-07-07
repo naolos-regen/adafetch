@@ -1,0 +1,12 @@
+name = "adafetch"
+description = "fetch sys info using ada"
+version = "0.1.0-dev"
+
+authors = ["nao"]
+maintainers = ["nao <naolos-regen@proton.me>"]
+maintainers-logins = ["naolos-regen"]
+licenses = "BSD-3-Clause"
+website = ""
+tags = []
+
+executables = ["adafetch"]
