@@ -1,4 +1,6 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 procedure Adafetch is
 begin
-   null;
+   Put_Line ("Hello, World!");
 end Adafetch;
