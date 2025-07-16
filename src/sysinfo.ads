@@ -6,8 +6,8 @@ package Sysinfo is
    procedure Get_Sys_Information;
 private
 
-   type System is (Sys_Linux, Sys_FreeBSD, Sys_OpenBSD,
-                   Sys_MacOS, Sys_POSIX, Sys_Other);
+   type Sys_Type is (Sys_Linux, Sys_FreeBSD, Sys_OpenBSD,
+                     Sys_MacOS, Sys_POSIX, Sys_Other);
    
    type Utsname is record
       sysname    : Interfaces.C.char_array(0 .. 64);
@@ -23,6 +23,6 @@ private
    function uname (name : access Utsname) return C.int;
    pragma Import (C, uname, "uname");
 
-   function Find_System return System;
+   function Find_System return Sys_Type;
 
 end Sysinfo;
