@@ -1,6 +1,6 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Sysinfo;
 
 procedure Adafetch is
 begin
-   Put_Line ("Hello, World!");
+   Sysinfo.Get_Sys_Information;
 end Adafetch;

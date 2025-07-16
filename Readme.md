@@ -21,4 +21,10 @@
 # Battery-Info
 >$ cat /sys/class/power_supply/BAT0
 
+# Monitor-Brighntess
+>$ cat /sys/class/backlight/<ALL>/max_brighntess | actual_brightness
+
+# bios
+>$ cat /sys/devices/virtual/dmi/id/bios_*
+
 ```
