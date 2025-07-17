@@ -22,7 +22,7 @@ package body Sysinfo is
             elsif System_Name = "Darwin" then
                return Sys_MacOS;
             else
-               return Sys_Other;
+               return Sys_POSIX;
             end if;
          end;
       end if;
