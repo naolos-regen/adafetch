@@ -27,4 +27,38 @@
 # bios
 >$ cat /sys/devices/virtual/dmi/id/bios_*
 
+sysinfo
+```
+
+# Posix-Information
+
+```bash
+statvfs
+getuid
+geteuid
+getpwuid
+getlogin
+getenv
+uname
+sysconf
+isatty
+ioctl
+sysconf
+gethostname
+getenv
+time
+localtime
+strftime
+clock_gettime
+
+
+unistd.h 
+pwd.h 
+utsname.h 
+statvfs.h 
+types.h 
+ioctl.h 
+time.h 
+locale.h 
+stdlib.h
 ```

@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Linux.Info;
 
 package body Linux is
    procedure Get_ALL is begin
