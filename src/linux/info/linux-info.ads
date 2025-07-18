@@ -12,9 +12,9 @@ package Linux.Info is
    subtype Detailed_Percentage is Float   range 0.0 .. 100.0;
 
    type Information is record
-      Battery_Information   : Battery_Pointer;
-      System_Information    : System_Info_Pointer;
-      Disk_Information      : Statfs_Pointer;
+      Battery_Information   : Battery_Pointer     := Get_Battery_Information;;
+      System_Information    : System_Info_Pointer := Get_System_Information;
+      Disk_Information      : Statfs_Pointer      := Get_Statfs_Information;
    end record;
 
    type Information_Pointer is access all Information;
@@ -72,6 +72,8 @@ package Linux.Info is
       pragma Import (C, sysinfo, "sysinfo");
 
       type System_Info_Pointer is access all System_Info;
+      
+      function Get_System_Information return System_Info_Pointer;
 
    end Linux.Info.System;
 
@@ -107,6 +109,8 @@ package Linux.Info is
       pragma Import (C, statfs, "statfs");
 
       type Statfs_Pointer is access all Statfs;
+
+      function Get_Statfs_Information return Statfs_Pointer;
 
    end Linux.Info.Disk;
 
