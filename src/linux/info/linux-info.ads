@@ -12,10 +12,11 @@ package Linux.Info is
    subtype Detailed_Percentage is Float   range 0.0 .. 100.0;
 
    type Information is record
-      Battery_Information            : Battery_Pointer                  := Get_Battery_Information;
-      System_Information             : System_Info_Pointer              := Get_System_Information;
-      Disk_Information               : Statfs_Pointer                   := Get_Statfs_Information;
-      Operating_System_Information   : Operating_System_Release_Pointer := Get_Operating_System_Release_Information;
+      Battery_Information            : Battery_Pointer                   := Get_Battery_Information;
+      System_Information             : System_Info_Pointer               := Get_System_Information;
+      Disk_Information               : Statfs_Pointer                    := Get_Statfs_Information;
+      Operating_System_Information   : Operating_System_Release_Pointer  := Get_Operating_System_Release_Information;
+      Graphics_Card_Information      : Graphics_Card_Information_Pointer := Get_Graphics_Card_Information;
    end record;
 
    type Information_Pointer is access all Information;
@@ -41,7 +42,6 @@ package Linux.Info is
          Energy_Now         : constant Integer;
          Capacity           : constant Percentage;
          Capacity_Level     : constant Capacity_Description;
-         
       end record;
 
       type Battery_Pointer is access all Battery;
@@ -116,10 +116,20 @@ package Linux.Info is
    end Linux.Info.Disk;
 
    package Linux.Info.Disk_IO is
-
+      
    end Linux.Info.Disk_IO;
 
    package Linux.Info.Graphics_Card is
+      type Graphics_Card_Information is record
+         Device               : constant Integer;
+         Vendor               : constant Integer;
+         Name_Hardware_Data   : constant String;
+         Virtual_Memory       : constant Integer;
+      end record;
+
+      type Graphics_Card_Information_Pointer is access all Graphics_Card_Information;
+
+      function Get_Graphics_Card_Information return Graphics_Card_Information_Pointer;
 
    end Linux.Info.Graphics_Card;
 
