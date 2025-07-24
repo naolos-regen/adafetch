@@ -3,6 +3,7 @@ package Linux.Info is
    Battery_Path            : constant String := "/sys/class/power_supply/";
    Bios_Path               : constant String := "/sys/devices/virtual/dmi/id/";
    CPU_Path                : constant String := "/proc/cpuinfo";
+   CPU_Useage_Path         : constant String := "/proc/stat";
    Graphics_Card_Path      : constant String := "/sys/class/card/drm/";
    Monitor_Brightness_Path : constant String := "/sys/class/backlight/";
    Operating_System_Path   : constant String := "/etc/os-release";

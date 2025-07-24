@@ -2,12 +2,15 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO;     use Ada.Text_IO;
 
 package body Linux.Info.Bios is
+
+   Bios_Path_Error : exception;
+
    function Get_Bios_Information return Bios_Information_Pointer is 
       Default_Bios_Path : constant String := Bios_Path;
       File              : File_Type;
    begin
       if not Exists (Default_Bios_Path) then
-         return null;
+         raise Bios_Path_Error with "Path Does Not Exist" & Default_Bios_Path;
       end if;
       
       Open (File, In_File, Default_Bios_Path + "uevent");

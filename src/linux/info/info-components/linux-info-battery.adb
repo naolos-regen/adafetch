@@ -1,6 +1,10 @@
 with Ada.Directories; use Ada.Directories;
+with Ada.Text_IO;     use Ada.Text_IO;
 
 package body Linux.Info.Battery is 
+   
+   Battery_Path_Error : exception;
+   
    function Find_Path return String is
       Default_Battery_Path : constant String := Linux.Info.Battery_Path;
       Battery_Entry        : Directory_Entry_Type;
@@ -8,7 +12,7 @@ package body Linux.Info.Battery is
       Battery_Filter       : Filter_Type := (Directory => True, others => False);
    begin
       if not Exists (Default_Battery_Path) then
-         return "not found";
+         raise Battery_Path_Error with "Directory Does Not Exist" & Default_Battery_Path;
       end if;
 
       Start_Search (
@@ -21,7 +25,7 @@ package body Linux.Info.Battery is
       while More_Entries (Battery_Search) loop
          Get_Next_Entry (Battery_Search, Battery_Entry);
          declare
-            Name : constant String := Simple_Name (Battery_Entry);
+            Name : constant String := Full_Name (Battery_Entry);
          begin
             End_Search (Battery_Search);
             return Name;
@@ -34,7 +38,7 @@ package body Linux.Info.Battery is
       Result_Battery_Path : constant String := Find_Path;
    begin
       if Battery_Path = "not found" then
-         return null;
+         raise Battery_Path_Error with "Not Found";
       end if;
       
 
