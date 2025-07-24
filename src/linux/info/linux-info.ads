@@ -18,6 +18,7 @@ package Linux.Info is
       Disk_Information               : Statfs_Pointer                    := Get_Statfs_Information;
       Operating_System_Information   : Operating_System_Release_Pointer  := Get_Operating_System_Release_Information;
       Graphics_Card_Information      : Graphics_Card_Information_Pointer := Get_Graphics_Card_Information;
+      CPU_Useage_Information         : constant Percentage               := Get_Cpu_Percentage;
    end record;
 
    type Information_Pointer is access all Information;
@@ -123,12 +124,22 @@ package Linux.Info is
 
    end Linux.Info.Bios;
 
-   package Linux.Info.Cpu_Cache is
-
-   end Linux.Info.Cpu_Cache;
-
    package Linux.Info.Cpu_Useage is
-      -- getloadavg()
+      type Cpu_Stats is record
+         User        : constant Integer;
+         Nice        : constant Integer;
+         System      : constant Integer;
+         Idle        : constant Integer;
+         Io_Wait     : constant Integer;
+         Irq         : constant Integer;
+         Soft_Irq    : constant Integer;
+         Steal       : constant Integer;
+         Guest       : constant Integer;
+         Guest_Nice  : constant Integer;
+      end record;
+   
+      function Get_Cpu_Percentage return Percentage;
+
    end Linux.Info.Cpu_Useage;
 
    package Linux.Info.Disk is
@@ -156,10 +167,6 @@ package Linux.Info is
 
    end Linux.Info.Disk;
 
-   package Linux.Info.Disk_IO is
-      
-   end Linux.Info.Disk_IO;
-
    package Linux.Info.Graphics_Card is
       type Graphics_Card_Information is record
          Device               : constant Integer;
@@ -175,7 +182,7 @@ package Linux.Info is
    end Linux.Info.Graphics_Card;
 
    package Linux.Info.Monitor_Brightness is
-
+      -- this might exist and/or might not /sys/class/backlight/<ALL>/
    end Linux.Info.Monitor_Brightness;
 
    package Linux.Info.Operating_System is
