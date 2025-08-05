@@ -36,13 +36,23 @@ package body Linux.Info.Battery is
 
    function Get_Battery_Information return Battery_Pointer is
       Result_Battery_Path : constant String := Find_Path;
+      File                : File_Type;
    begin
       if Battery_Path = "not found" then
          raise Battery_Path_Error with "Not Found";
       end if;
       
+      Open (File, In_File, Result_Battery_Path);
 
+      while not End_Of_File loop
+         declare
+            Line : constant String := Get_Line;
+         begin
+            Put_Line(Line);
+         end;
+      end loop;
       
+      Close (File);
    end Get_Battery_Information;
 
 
