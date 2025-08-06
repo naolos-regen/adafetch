@@ -1,8 +1,28 @@
-with Ada.Directories; use Ada.Directories;
-with Ada.Text_IO;     use Ada.Text_IO;
-
+with Ada.Directories;                        use Ada.Directories;
+with Ada.Text_IO;                            use Ada.Text_IO;
+with Ada.Containers.Indefinite_Ordered_Maps; use Ada.Containers.Indefinite_Ordered_Maps;
 package body Linux.Info.Battery is 
-   
+   -- TODO: EXAMPLE OF MY LENOVO LAPTOP, BECAUSE I DON'T HAVE IT ON PC :-)
+   -- DEVTYPE=power_supply
+   -- POWER_SUPPLY_NAME=BAT0
+   -- POWER_SUPPLY_TYPE=Battery
+   -- POWER_SUPPLY_STATUS=Discharging
+   -- POWER_SUPPLY_PRESENT=1
+   -- POWER_SUPPLY_TECHNOLOGY=Li-poly
+   -- POWER_SUPPLY_CYCLE_COUNT=819
+   -- POWER_SUPPLY_VOLTAGE_MIN_DESIGN=11550000
+   -- POWER_SUPPLY_VOLTAGE_NOW=12263000
+   -- POWER_SUPPLY_POWER_NOW=5996000
+   -- POWER_SUPPLY_ENERGY_FULL_DESIGN=50500000
+   -- POWER_SUPPLY_ENERGY_FULL=51480000
+   -- POWER_SUPPLY_ENERGY_NOW=45600000
+   -- POWER_SUPPLY_CAPACITY=88
+   -- POWER_SUPPLY_CAPACITY_LEVEL=Normal
+   -- POWER_SUPPLY_TYPE=Battery
+   -- POWER_SUPPLY_MODEL_NAME=02DL007
+   -- POWER_SUPPLY_MANUFACTURER=LGC
+   -- POWER_SUPPLY_SERIAL_NUMBER= 1421
+
    Battery_Path_Error : exception;
    
    function Find_Path return String is
