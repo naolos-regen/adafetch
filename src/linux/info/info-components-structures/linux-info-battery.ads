@@ -1,25 +1,30 @@
+with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
+with Ada.Directories;              use Ada.Directories;
+with Ada.Text_IO;                  use Ada.Text_IO;
+with Ada.Containers.Ordered_Maps;  use Ada.Containers.Ordered_Maps;
+with Ada.Containers.Vectors;       use Ada.Containers.Vectors;
+with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
+
 package Linux.Info.Battery is
    Battery_Path : constant String := "/sys/class/power_supply/";
 
-   type Capacity_Description is (Unknown, Critical, Low, Normal, High, Full);
-
    type Battery is record
-      Dev_Type           : constant String;
-      Name               : constant Stirng;
-      Status             : constant Capacity_Description;
-      Model_Name         : constant String;
-      Manufacturer       : constant String;
-      Technology         : constant String;
-      Present            : constant Boolean;
-      Cycle_Count        : constant Integer;
-      Voltage_Min_Design : constant Integer;
-      Voltage_Now        : constant Integer;
-      Power_Now          : constant Integer;
-      Energy_Full_Design : constant Integer;
-      Energy_Full        : constant Integer;
-      Energy_Now         : constant Integer;
-      Capacity           : constant Percentage;
-      Capacity_Levele    : constant Capacity_Description;
+      Dev_Type           : Unbounded_String;
+      Name               : Unbounded_String;
+      Status             : Unbounded_String;
+      Model_Name         : Unbounded_String;
+      Manufacturer       : Unbounded_String;
+      Technology         : Unbounded_String;
+      Present            : Boolean;
+      Cycle_Count        : Integer;
+      Voltage_Min_Design : Integer;
+      Voltage_Now        : Integer;
+      Power_Now          : Integer;
+      Energy_Full_Design : Integer;
+      Energy_Full        : Integer;
+      Energy_Now         : Integer;
+      Capacity           : Percentage;
+      Capacity_Level     : Capacity_Description;
    end record;
 
    type Battery_Pointer is access all Battery;
