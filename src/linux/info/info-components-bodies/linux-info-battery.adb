@@ -7,6 +7,7 @@ package body Linux.Info.Battery is
    
    function Find_Path return String is
       Default_Battery_Path : constant String := Linux.Info.Battery_Path;
+      Default_Result       : constant String := "not fonud";
       Battery_Entry        : Directory_Entry_Type;
       Battery_Search       : Search_Type;
       Battery_Filter       : Filter_Type := (Directory => True, others => False);
@@ -31,12 +32,13 @@ package body Linux.Info.Battery is
             return Name;
          end;
       end loop;
-      
+      return Default_Result;
    end Find_Path;
 
    function Get_Battery_Information return Battery_Pointer is
-      Result_Battery_Path : constant String := Find_Path;
+      Result_Battery_Path : constant String := Find_Path & "/uevent";
       File                : File_Type;
+      Battery_Result      : Battery_Pointer;
    begin
       if Battery_Path = "not found" then
          raise Battery_Path_Error with "Not Found";
@@ -51,7 +53,6 @@ package body Linux.Info.Battery is
             Put_Line(Line);
          end;
       end loop;
-      
       Close (File);
    end Get_Battery_Information;
 
