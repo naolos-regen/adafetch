@@ -1,5 +1,6 @@
 # Info-Linux-Sys
 
+This might be a bit too much, but Hell-yeah!
 ```bash
 # Uptime-Info
 >$ cat /proc/uptime
