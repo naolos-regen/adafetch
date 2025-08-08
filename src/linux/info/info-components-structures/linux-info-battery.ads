@@ -6,16 +6,16 @@ with Ada.Containers.Vectors;       use Ada.Containers.Vectors;
 with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
 
 package Linux.Info.Battery is
+   
    Battery_Path : constant String := "/sys/class/power_supply/";
 
    type Battery is record
+      BATNUM             : Unbounded_String;
       Dev_Type           : Unbounded_String;
       Name               : Unbounded_String;
       Status             : Unbounded_String;
-      Model_Name         : Unbounded_String;
-      Manufacturer       : Unbounded_String;
-      Technology         : Unbounded_String;
       Present            : Boolean;
+      Technology         : Unbounded_String;
       Cycle_Count        : Integer;
       Voltage_Min_Design : Integer;
       Voltage_Now        : Integer;
@@ -23,9 +23,12 @@ package Linux.Info.Battery is
       Energy_Full_Design : Integer;
       Energy_Full        : Integer;
       Energy_Now         : Integer;
-      Capacity           : Percentage;
-      Capacity_Level     : Capacity_Description;
-   end record;
+      Capacity           : Integer;
+      Capacity_Level     : Unbounded_String;
+      Model_Name         : Unbounded_String;
+      Manufacturer       : Unbounded_String;
+      S_Number           : Unbounded_String;
+    end record;
 
    type Battery_Pointer is access all Battery;
 
