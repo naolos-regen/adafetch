@@ -8,8 +8,7 @@ with Linux.Info.Graphics_Card;    use Linux.Info.Graphics_Card;
 with Constants; use Constants;
 
 package Linux.Info is
-
-   Battery_Path            : constant String := "/sys/class/power_supply/";
+   
    Bios_Path               : constant String := "/sys/devices/virtual/dmi/id/";
    CPU_Path                : constant String := "/proc/cpuinfo";
    CPU_Useage_Path         : constant String := "/proc/stat";

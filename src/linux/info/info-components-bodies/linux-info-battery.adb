@@ -1,41 +1,6 @@
 package body Linux.Info.Battery is 
-
-   type UEvent_Index is
-   (
-      BAT, DEVTYPE, NAME, STATUS, PRESENT,
-      TECHNOLOGY, CYCLE_COUNT, VOLTAGE_MIN_DESIGN,
-      VOLTAGE_MIN, POWER_NOW, ENERGY_FULL_DESIGN,
-      ENERGY_FULL, CAPACITY, CAPACITY_LEVEL,
-      BATTYPE, MODEL_NAME, MANUFACTURER, SERIAL_NUMBER
-   );
-
    package Vec is new Vectors (Natural, Unbounded_String);
    use Vec;
-
-   Battery_Path : constant String := "/sys/class/power_supply/";
-
-   type Battery is record
-      Dev_Type           : Unbounded_String;
-      Name               : Unbounded_String;
-      Status             : Unbounded_String;
-      Model_Name         : Unbounded_String;
-      Manufacturer       : Unbounded_String;
-      Technology         : Unbounded_String;
-      Present            : Boolean;
-      Cycle_Count        : Integer;
-      Voltage_Min_Design : Integer;
-      Voltage_Now        : Integer;
-      Power_Now          : Integer;
-      Energy_Full_Design : Integer;
-      Energy_Full        : Integer;
-      Energy_Now         : Integer;
-      Capacity           : Integer;
-      Capacity_Level     : Unbounded_String;
-   end record;
-
-   type Battery_Pointer is access all Battery;
-   
-   Battery_Path_Error : exception;
 
    function Find_Path return String is
       Default_Result : constant String := "not found";
@@ -68,6 +33,14 @@ package body Linux.Info.Battery is
    end Find_Path;
    
    function Parse_Lines (Vec: in out Vector) return Battery_Pointer is
+      type UEvent is
+      (
+         BAT, DEVTYPE, NAME, STATUS, PRESENT,
+         TECHNOLOGY, CYCLE_COUNT, VOLTAGE_MIN_DESIGN,
+         VOLTAGE_MIN, POWER_NOW, ENERGY_FULL_DESIGN,
+         ENERGY_FULL, CAPACITY, CAPACITY_LEVEL,
+         BATTYPE, MODEL_NAME, MANUFACTURER, SERIAL_NUMBER
+      );
       Battery_Data : Battery := (
          BATNUM             => To_Unbounded_String(""),
          Dev_Type           => To_Unbounded_String(""),
@@ -89,32 +62,32 @@ package body Linux.Info.Battery is
          S_Number           => To_Unbounded_String("")
          );
    begin
-      Battery_Data.BATNUM              := Vec (UEvent_Index'Pos (BAT));
-      Battery_Data.Dev_Type            := Vec (UEvent_Index'Pos (DEVTYPE));
-      Battery_Data.Name                := Vec (UEvent_Index'Pos (NAME));
-      Battery_Data.Status              := Vec (UEvent_Index'Pos (STATUS));
-      if To_String (Vec (UEvent_Index'Pos (PRESENT))) = "1" then
+      Battery_Data.BATNUM              := Vec (UEvent'Pos (BAT));
+      Battery_Data.Dev_Type            := Vec (UEvent'Pos (DEVTYPE));
+      Battery_Data.Name                := Vec (UEvent'Pos (NAME));
+      Battery_Data.Status              := Vec (UEvent'Pos (STATUS));
+      if To_String (Vec (UEvent'Pos (PRESENT))) = "1" then
          Battery_Data.Present          := True;
       end if;
-      Battery_Data.Technology          := Vec (UEvent_Index'Pos (TECHNOLOGY));
+      Battery_Data.Technology          := Vec (UEvent'Pos (TECHNOLOGY));
       Battery_Data.Cycle_Count         := 
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (CYCLE_COUNT))));
+         Integer'Value (To_String (Vec (UEvent'Pos (CYCLE_COUNT))));
       Battery_Data.Voltage_Min_Design  := 
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (VOLTAGE_MIN_DESIGN))));
+         Integer'Value (To_String (Vec (UEvent'Pos (VOLTAGE_MIN_DESIGN))));
       Battery_Data.Voltage_Now         :=
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (VOLTAGE_MIN))));
+         Integer'Value (To_String (Vec (UEvent'Pos (VOLTAGE_MIN))));
       Battery_Data.Power_Now           :=
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (POWER_NOW))));
+         Integer'Value (To_String (Vec (UEvent'Pos (POWER_NOW))));
       Battery_Data.Energy_Full_Design  :=
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (ENERGY_FULL_DESIGN))));
+         Integer'Value (To_String (Vec (UEvent'Pos (ENERGY_FULL_DESIGN))));
       Battery_Data.Energy_Full         :=
-         Integer'Value (To_String (Vec (UEvent_Index'Pos (ENERGY_FULL))));
+         Integer'Value (To_String (Vec (UEvent'Pos (ENERGY_FULL))));
       Battery_Data.Capacity            := 
-         Integer'Value (To_String (Vec (Uevent_Index'Pos (CAPACITY))));
-      Battery_Data.Capacity_Level      := Vec (UEvent_Index'Pos (CAPACITY_LEVEL));
-      Battery_Data.Model_Name          := Vec (UEvent_Index'Pos (MODEL_NAME));
-      Battery_Data.Manufacturer        := Vec (UEvent_Index'Pos (MANUFACTURER));
-      Battery_Data.S_Number            := Vec (UEvent_Index'Pos (SERIAL_NUMBER));
+         Integer'Value (To_String (Vec (UEvent'Pos (CAPACITY))));
+      Battery_Data.Capacity_Level      := Vec (UEvent'Pos (CAPACITY_LEVEL));
+      Battery_Data.Model_Name          := Vec (UEvent'Pos (MODEL_NAME));
+      Battery_Data.Manufacturer        := Vec (UEvent'Pos (MANUFACTURER));
+      Battery_Data.S_Number            := Vec (UEvent'Pos (SERIAL_NUMBER));
       return new Battery'(Battery_Data);
    end Parse_Lines;
 
