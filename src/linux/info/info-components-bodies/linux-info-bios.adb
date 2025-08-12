@@ -4,123 +4,93 @@ package body Linux.Info.Bios is
 
    use Vec;
 
-   type Modalias is
-   (
-      DMI, BVN, BVR, BD,  BR,  SVN, PN, PVR, RVN
-      RN,  RVR, CVN, CT3, CVR, SKU
-   );
-
-   Modalias_Strings : constant array (Modalias) of String :=
-   (
-      DMI => "dmi",
-      BVN => "bvn",
-      BVR => "bvr",
-      BD  => "bd",
-      BR  => "br",
-      SVN => "svn",
-      PN  => "PN",
-      PVR => "pvr",
-      RVN => "rvn",
-      RN  => "rn",
-      RVR => "rvr",
-      CT3 => "ct3",
-      CVR => "cvr",
-      SKU => "sku"
-   )
-   
-   function One_Liner_To_Vector (Line : Unbounded_String) return Vector is
-      B_Vec       : Vector := Empty_Vector;
-      String_Line : constant String := To_String (Line);
-
+   function Get_One_Line return String is
+      One_Liner : Unbounded_String := To_Unbounded_String ("");
+      File      : File_Type;
    begin
-      -- TODO: Split Strings according to their Seperator ':' = New_Line
-      --
-      return B_Vec;
-   end One_Liner_To_Vector;
+      Open (File, In_File, Bios_Path);
+
+      One_Liner := To_Unbounded_String (Get_Line (File));
+
+      Close (File);
+
+      return To_String (One_Liner);
+   end Get_One_Line;
+   
+   function Parse_Vector (Vec : in out Vector) return Bios_Information_Pointer is 
+      type Modalias is
+      (
+         DMI, BVN, BVR, BD,  BR,  EFR, SVN, PN,
+         PVR, RVN, RN,  RVR, CVN, CT,  CVR, SKU
+      );
+      Modalias_Strings : constant array (Modalias) of Integer :=
+      (
+         DMI => 4,
+         BVN => 4,
+         BVR => 4,
+         BD  => 3,
+         BR  => 3,
+         SVN => 4,
+         EFR => 4,
+         PN  => 3,
+         PVR => 4,
+         RVN => 4,
+         RN  => 3,
+         RVR => 4,
+         CVN => 4,
+         CT  => 3,
+         CVR => 4,
+         SKU => 4
+      );
+   begin
+      for M in Modalias'First .. Modalias'Last loop
+         declare
+            Modalias_Index  : constant Natural
+                            := Modalias'Pos(M);
+            Length_Modalias : constant Positive
+                            := Modalias_Strings (Modalias (M));
+            Vector_String   : constant Unbounded_String
+                            := Vec (Modalias_Index);
+            Stripped        : constant String
+                            := Slice (
+                                      Vector_String, 
+                                      Length_Modalias, 
+                                      Length (Vector_String)
+                                      );
+         begin;
+            Put_Line (Stripped);
+         end;
+      end loop;
+   end Parse_Vector;
 
    function Empty_Unbounded_String return Unbounded_String is
    begin
       return To_Unbounded_String ("");
    end Empty_Unbounded_String;
-
-   function Append_From_Path return Vector is 
-      Default_Bios_Path : constnat String  := Bios_Path;
-      File              : File_Type;
-      One_Liner_Modalias: Unbounded_String := "";
+   
+   function Split_One_Line (Line : constant String) return Vector is
+      Bios_Vector : Vector := Empty_Vector;
+      Subs        : Slice_Set;
+      Seps        : constant String := ":" & Latin_1.HT;
    begin
-      if not Exists (Default_Bios_Path) then
-         raise Bios_Path_Error with "Path Does Not Exist" & Default_Bios_Path;
-      end if;
+      Create (Subs, Line, Seps, Multiple);
 
-      Open (File, In_File, Default_Bios_Path);
-
-      while not End_Of_File (File) loop
-         One_Liner_Modalias := To_Unbounded_String (Get_Line (File));
-      end loop;
-      
-      Close (File);
-
-      return One_Liner_To_Vector (One_Liner_Modalias);
-   end Append_From_Path;
-
-   function Parse_Vector (Vec : in out Vector) return Bios_Information_Pointer is
-      Bios_Structure    : Bios                     := Empty_Bios;
-      System_Structure  : System                   := Empty_System;
-      Board_Structure   : Board                    := Empty_Board;
-      Chassis_Structure : Chassis                  := Empty_Chassis;
-      Product_Structure : Product                  := Empty_Product;
-      Result            : Bios_Information_Pointer := new Bios_Info;
-   begin
-      for Value of Vec loop
-         -- TODO: Replace
+      for I in 1 .. Slice_Count (Subs) loop
          declare
-            Line        : constant String  := To_String (Value);
-            Colon_Pos   : constant Natural := Index (Line, ":");
-            Tag         : String := (if Colon_Pos > 0 
-                                       then Line (Line'First .. Colon_Pos - 1) 
-                                       else Line);
-            Value       : String := (if Colon_Pos > 0
-                                       then Line (Colon_Pos + 1 .. Line'Last) 
-                                       else "");
+            Sub : constant Unbounded_String := To_Unbounded_String (Slice (Subs, I));
          begin
-            -- TODO: Finish :-)
-            for M in Modalias loop
-               if Tag = Modalias_Strings (M) then
-                  case M
-                     when BD  =>
-                     when BR  =>
-                     when BVN =>
-                     when BVR =>
-                     when SVN =>
-                     when RN  =>
-                     when RVN =>
-                     when RVR =>
-                     when CT3 =>
-                     when CVR =>
-                     when CVR =>
-                     when PN  =>
-                     when SKU =>
-                     when PVR =>
-                     when others => null;
-                  end case;
-               end if;
-            end loop;
+            Append (Bios_Vector, Sub);
          end;
       end loop;
 
-      Result.all.Bios_Info    := Bios_Structure;
-      Result.all.System_Info  := System_Structure;
-      Result.all.Board_Info   := Board_Structure;
-      Result.all.Chassis_Info := Chassis_Structure;
-      Result.all.Product_Info := Product_Structure;
+      return Bios_Vector;
+   end Split_One_Line;
 
-      return Result;
-   end Parse_Vector;
    function Get_Bios_Information return Bios_Information_Pointer is 
       Default_Bios_Path : constant String := Bios_Path;
       File              : File_Type;
       Bios_Vector       : Vector          := Append_From_Path;
    begin 
-      return Parse_Vector (Bios_Vector);
+      return Parse_Vector (Split_One_Line (Get_One_Line));
    end Get_Bios_Information;
 end Linux.Info.Bios;
