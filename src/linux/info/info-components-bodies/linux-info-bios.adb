@@ -42,6 +42,13 @@ package body Linux.Info.Bios is
          CVR => 4,
          SKU => 4
       );
+      B_Vec : Vector    := Empty_Vector;
+      B_R   : Bios      := Empty_Bios;
+      B_S   : System    := Empty_System;
+      B_B   : Board     := Empty_Board;
+      B_C   : Chassis   := Empty_Chassis;
+      B_P   : Product   := Empty_Product;
+      B_I   : Bios_Info;
    begin
       for M in Modalias'First .. Modalias'Last loop
          declare
@@ -58,9 +65,35 @@ package body Linux.Info.Bios is
                                       Length (Vector_String)
                                       );
          begin;
-            Put_Line (Stripped);
+            Append (B_Vec, To_Unbounded_String(Stripped));
          end;
       end loop;
+      B_R.Date    := B_Vec (Modalias'Pos(BD ));
+      B_R.Release := B_Vec (Modalias'Pos(BR ));
+      B_R.Vendor  := B_Vec (Modalias'Pos(BVN));
+      B_R.Version := B_Vec (Modalias'Pos(BVR));
+
+      B_S.Vendor  := B_Vec (Modalias'Pos(SVN));
+
+      B_B.Name    := B_Vec (Modalias'Pos(RN ));
+      B_B.Vendor  := B_Vec (Modalias'Pos(RVN));
+      B_B.Version := B_Vec (Modalias'Pos(RVR));
+
+      B_C.Name    := B_Vec (Modalias'Pos(CT ));
+      B_C.Vendor  := B_Vec (Modalias'Pos(CVN));
+      B_C.Version := B_Vec (Modalias'Pos(CVR));
+
+      B_P.Name    := B_Vec (Modalias'Pos(PN ));
+      B_P.SKU     := B_Vec (Modalias'Pos(SKU));
+      B_P.Version := B_Vec (Modalias'Pos(PVR));
+
+      B_I.Bios_Info    := B_R;
+      B_I.Board_Info   := B_B;
+      B_I.Chassis_Info := B_C;
+      B_I.Product_Info := B_P;
+      B_I.System_Info  := B_S;
+
+      return Bios_Information_Pointer (B_I);
    end Parse_Vector;
 
    function Empty_Unbounded_String return Unbounded_String is

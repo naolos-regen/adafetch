@@ -9,7 +9,6 @@ with Constants; use Constants;
 
 package Linux.Info is
    
-   Bios_Path               : constant String := "/sys/devices/virtual/dmi/id/";
    CPU_Path                : constant String := "/proc/cpuinfo";
    CPU_Useage_Path         : constant String := "/proc/stat";
    Graphics_Card_Path      : constant String := "/sys/class/card/drm/";
@@ -26,7 +25,7 @@ package Linux.Info is
       Disk_Information               : Statfs_Pointer                    := Get_Statfs_Information;
       Operating_System_Information   : Operating_System_Release_Pointer  := Get_Operating_System_Release_Information;
       Graphics_Card_Information      : Graphics_Card_Information_Pointer := Get_Graphics_Card_Information;
-      CPU_Useage_Information         : constant Percentage               := Get_Cpu_Percentage;
+      CPU_Useage_Information         : Percentage                        := Get_Cpu_Percentage;
    end record;
 
    type Information_Pointer is access all Information;
