@@ -57,7 +57,7 @@ package body Linux.Info.Bios is
                                       Length_Modalias, 
                                       Length (Vector_String)
                                       );
-         begin;
+         begin
             Put_Line (Stripped);
          end;
       end loop;
