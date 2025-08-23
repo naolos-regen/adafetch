@@ -43,13 +43,17 @@ package body Linux.Info.Cpu_Useage is
    
    function Percentage (F : Float) return Percentage is 
    begin
-
+      if F < 0.0 then 
+         return 0;
+      elsif F > 100.0 then
+         return 100;
+      else
+         return Percentage (F);
+      end if;
    end Percentage;
 
-   function Calculate_CPU_Useage (I_N, I_L, 
-                                  T_N, T_L : Integer)
-   return Float
-   is
+   function Calculate_CPU_Useage (I_N, I_L, T_N, T_L : Integer)
+   return Percentage is
    begin 
       return Percentage (100.0 * (1.0 - Float (I_N - I_L) / Float (T_N - T_L)));
    end Calculate_CPU_Useage;

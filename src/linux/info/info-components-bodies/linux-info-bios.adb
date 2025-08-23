@@ -68,7 +68,7 @@ package body Linux.Info.Bios is
       return To_Unbounded_String ("");
    end Empty_Unbounded_String;
    
-   function Split_One_Line (Line : constant String) return Vector is
+   function Split_One_Line (Line : String) return Vector is
       Bios_Vector : Vector := Empty_Vector;
       Subs        : Slice_Set;
       Seps        : constant String := ":" & Latin_1.HT;
