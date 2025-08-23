@@ -1,4 +1,13 @@
-# Info-Linux-Sys
+# Adafetch
+
+The basic idea of Adafetch is to create my own configurable fetch sysinfo.
+
+
+# Informations-For-Me
+
+## Info-Linux-Sys
+
+
 
 This might be a bit too much, but Hell-yeah!
 ```bash
@@ -11,6 +20,7 @@ This might be a bit too much, but Hell-yeah!
 
 # CPU-Info
 >$ cat /proc/cpuinfo
+>$ cat /proc/stat
 
 # RAM-Info
 >$ cat /proc/meminfo
@@ -28,10 +38,9 @@ This might be a bit too much, but Hell-yeah!
 # bios
 >$ cat /sys/devices/virtual/dmi/id/bios_*
 
-sysinfo
 ```
 
-# Posix-Information
+## Posix-Information
 
 ```bash
 statvfs
