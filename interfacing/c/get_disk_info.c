@@ -7,3 +7,4 @@ struct statvfs get_disk_info(const char *path) {
         exit(EXIT_FAILURE);
     return (stat);
 }
+
