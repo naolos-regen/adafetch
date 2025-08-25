@@ -1,6 +1,4 @@
 package body Linux.Info.Cpu_Useage is 
-<<<<<<< HEAD
- 
    CPU_Useage_Path_Error : exception;
    
    procedure Split_Vector (V : in out Vector) is 
@@ -22,13 +20,14 @@ package body Linux.Info.Cpu_Useage is
          end;
       end loop;
    end Split_Vector;
-=======
-   type Stat is 
+   
+     
+   function Get_Stat return CPU_Stats is
+      type Stat is 
               (EMPTY,
               CPUNAME, USER, NICE, SYSTEM, 
               IDLE, IOWAIT, IRQ, SOFTIRQ);
-   
-   function Get_Stat return CPU_Stats is
+
       File : File_Type;
       Line : Unbounded_String;
       Seps : constant String := " " & Latin_1.HT;
@@ -75,7 +74,6 @@ package body Linux.Info.Cpu_Useage is
          return Percentage (F);
       end if;
    end Percentage;
->>>>>>> refs/remotes/origin/master
 
    function Calculate_CPU_Useage (I_N, I_L, T_N, T_L : Integer)
    return Percentage is
@@ -85,35 +83,15 @@ package body Linux.Info.Cpu_Useage is
    
    function Get_Cpu_Percentage return Percentage is
       Default_Cpu_Useage_Path : constant String := CPU_Useage_Path;
-<<<<<<< HEAD
-      File                    : File_Type;
-      C_Vec                   : Vector := Empty_Vector;
-=======
       CPU_Useage_Path_Error   : exception;
       Stat1, Stat2            : CPU_Stats;
       Idle_Last, Idle_Next    : Integer;
       Total_Last, Total_Next  : Integer;
->>>>>>> refs/remotes/origin/master
    begin
       if not Exists (Default_Cpu_Useage_Path) then
          raise CPU_Useage_Path_Error with "File Does Not Exist" & Default_CPU_Useage_Path;
       end if;
       
-<<<<<<< HEAD
-      Open (File, In_File, Default_Cpu_Useage_Path);
-      Set_Line_Length (File, 7);
-
-      while not End_Of_File (File) loop
-         declare
-            Line : constant String := Get_Line(File);
-         begin
-            Append (C_Vec, To_Unbounded_String (Line));
-         end;
-      end loop;
-      
-      Split_Vector (C_Vec);
-
-=======
       Stat1      := Get_Stat;
       Idle_Last  := Stat1.Idle + Stat1.IO_Wait;
       Total_Last := Sum_Total (Stat1);
@@ -125,7 +103,6 @@ package body Linux.Info.Cpu_Useage is
       Total_Next := Sum_Total (Stat2);
 
       return Calculate_Cpu_Percentage (Idle_Next, Idle_Last, Total_Next, Total_Last);
->>>>>>> refs/remotes/origin/master
    end Get_Cpu_Percentage;
 
 end Linux.Info.Cpu_Useage;

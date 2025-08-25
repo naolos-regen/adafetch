@@ -64,13 +64,8 @@ package body Linux.Info.Bios is
                                       Length_Modalias, 
                                       Length (Vector_String)
                                       );
-<<<<<<< HEAD
          begin;
             Append (B_Vec, To_Unbounded_String(Stripped));
-=======
-         begin
-            Put_Line (Stripped);
->>>>>>> refs/remotes/origin/master
          end;
       end loop;
       B_R.Date    := B_Vec (Modalias'Pos(BD ));
