@@ -64,8 +64,13 @@ package body Linux.Info.Bios is
                                       Length_Modalias, 
                                       Length (Vector_String)
                                       );
+<<<<<<< HEAD
          begin;
             Append (B_Vec, To_Unbounded_String(Stripped));
+=======
+         begin
+            Put_Line (Stripped);
+>>>>>>> refs/remotes/origin/master
          end;
       end loop;
       B_R.Date    := B_Vec (Modalias'Pos(BD ));
@@ -101,7 +106,7 @@ package body Linux.Info.Bios is
       return To_Unbounded_String ("");
    end Empty_Unbounded_String;
    
-   function Split_One_Line (Line : constant String) return Vector is
+   function Split_One_Line (Line : String) return Vector is
       Bios_Vector : Vector := Empty_Vector;
       Subs        : Slice_Set;
       Seps        : constant String := ":" & Latin_1.HT;
